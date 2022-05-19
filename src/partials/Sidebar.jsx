@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
-import SidebarLinkGroup from "./SidebarLinkGroup";
 import { FiSettings } from "react-icons/fi";
+import { FaUsers, FaHandshake } from "react-icons/fa";
+import { IoStorefront, IoAnalyticsSharp } from "react-icons/io5";
+import { MdOutlineAttachMoney } from "react-icons/md";
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
   const { pathname } = location;
@@ -119,13 +121,12 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               >
                 •••
               </span>
-              <span className="lg:hidden lg:sidebar-expanded:block 2xl:block">Pages</span>
+              <span className="lg:hidden lg:sidebar-expanded:block 2xl:block">Principal</span>
             </h3>
             <ul className="mt-3">
               {/* Dashboard */}
               <li className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${pathname === "/" && "bg-slate-900"}`}>
                 <NavLink
-                  end
                   to="/"
                   className={`block text-slate-200 hover:text-white truncate transition duration-150 ${
                     pathname === "/" && "hover:text-slate-200"
@@ -158,7 +159,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               >
                 <NavLink
                   end
-                  to="/"
+                  to="/analytics"
                   className={`block text-slate-200 hover:text-white truncate transition duration-150 ${
                     pathname.includes("analytics") && "hover:text-slate-200"
                   }`}
@@ -180,20 +181,149 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   </div>
                 </NavLink>
               </li>
-              <li
-                className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${pathname.includes("analytics") && "bg-slate-900"}`}
-              >
+              <li className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${pathname.includes("sales") && "bg-slate-900"}`}>
                 <NavLink
                   end
-                  to="/"
+                  to="/sales"
                   className={`block text-slate-200 hover:text-white truncate transition duration-150 ${
-                    pathname.includes("analytics") && "hover:text-slate-200"
+                    pathname.includes("configuration") && "hover:text-slate-200"
                   }`}
                 >
                   <div className="flex items-center">
-                    <FiSettings className="w-6 h-6 shrink-0" />
+                    <MdOutlineAttachMoney
+                      className={`w-6 h-6 shrink-0 ${pathname.includes("sales") && "text-indigo-600"}`}
+                    />
+                    <span className="ml-3 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                      Ventas
+                    </span>
+                  </div>
+                </NavLink>
+              </li>
+              <li
+                className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
+                  pathname.includes("configuration") && "bg-slate-900"
+                }`}
+              >
+                <NavLink
+                  end
+                  to="/configuration"
+                  className={`block text-slate-200 hover:text-white truncate transition duration-150 ${
+                    pathname.includes("configuration") && "hover:text-slate-200"
+                  }`}
+                >
+                  <div className="flex items-center">
+                    <FiSettings
+                      className={`w-6 h-6 shrink-0 ${pathname.includes("configuration") && "text-indigo-600"}`}
+                    />
                     <span className="ml-3 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
                       Configuración
+                    </span>
+                  </div>
+                </NavLink>
+              </li>
+            </ul>
+            <h3 className="pl-3 text-xs font-semibold uppercase text-slate-500 mt-6">
+              <span
+                className="hidden w-6 text-center lg:block lg:sidebar-expanded:hidden 2xl:hidden"
+                aria-hidden="true"
+              >
+                •••
+              </span>
+              <span className="lg:hidden lg:sidebar-expanded:block 2xl:block">Negocio</span>
+            </h3>
+            <ul className="mt-3">
+              <li className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${pathname.includes("clients") && "bg-slate-900"}`}>
+                <NavLink
+                  end
+                  to="/clients"
+                  className={`block text-slate-200 hover:text-white truncate transition duration-150 ${
+                    pathname.includes("clients") && "hover:text-slate-200"
+                  }`}
+                >
+                  <div className="flex items-center">
+                    <FaUsers className={`w-6 h-6 shrink-0 ${pathname.includes("clients") && "text-indigo-600"}`} />
+                    <span className="ml-3 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                      Clientes
+                    </span>
+                  </div>
+                </NavLink>
+              </li>
+              <li
+                className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${pathname.includes("suppliers") && "bg-slate-900"}`}
+              >
+                <NavLink
+                  end
+                  to="/suppliers"
+                  className={`block text-slate-200 hover:text-white truncate transition duration-150 ${
+                    pathname.includes("suppliers") && "hover:text-slate-200"
+                  }`}
+                >
+                  <div className="flex items-center">
+                    <FaHandshake
+                      className={`w-6 h-6 shrink-0 ${pathname.includes("suppliers") && "text-indigo-600"}`}
+                    />
+                    <span className="ml-3 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                      Proveedores
+                    </span>
+                  </div>
+                </NavLink>
+              </li>
+              <li
+                className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${pathname.includes("products") && "bg-slate-900"}`}
+              >
+                <NavLink
+                  end
+                  to="/products"
+                  className={`block text-slate-200 hover:text-white truncate transition duration-150 ${
+                    pathname.includes("products") && "hover:text-slate-200"
+                  }`}
+                >
+                  <div className="flex items-center">
+                    <IoStorefront
+                      className={`w-6 h-6 shrink-0 ${pathname.includes("products") && "text-indigo-600"}`}
+                    />
+                    <span className="ml-3 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                      Productos
+                    </span>
+                  </div>
+                </NavLink>
+              </li>
+              <li className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${pathname.includes("reports") && "bg-slate-900"}`}>
+                <NavLink
+                  end
+                  to="/reports"
+                  className={`block text-slate-200 hover:text-white truncate transition duration-150 ${
+                    pathname.includes("reports") && "hover:text-slate-200"
+                  }`}
+                >
+                  <div className="flex items-center">
+                    <IoAnalyticsSharp
+                      className={`w-6 h-6 shrink-0 ${pathname.includes("reports") && "text-indigo-600"}`}
+                    />
+                    <span className="ml-3 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                      Reportes
+                    </span>
+                  </div>
+                </NavLink>
+              </li>
+              <li
+                className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
+                  pathname.includes("transactions") && "bg-slate-900"
+                }`}
+              >
+                <NavLink
+                  end
+                  to="/transactions"
+                  className={`block text-slate-200 hover:text-white truncate transition duration-150 ${
+                    pathname.includes("transactions") && "hover:text-slate-200"
+                  }`}
+                >
+                  <div className="flex items-center">
+                    <IoAnalyticsSharp
+                      className={`w-6 h-6 shrink-0 ${pathname.includes("transactions") && "text-indigo-600"}`}
+                    />
+                    <span className="ml-3 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                      Transacciones
                     </span>
                   </div>
                 </NavLink>
