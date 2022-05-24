@@ -4,7 +4,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
 import { FaUsers, FaHandshake } from "react-icons/fa";
 import { IoStorefront, IoAnalyticsSharp } from "react-icons/io5";
-import { MdOutlineAttachMoney } from "react-icons/md";
+import { MdOutlineAttachMoney, MdLogout } from "react-icons/md";
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
   const { pathname } = location;
@@ -16,7 +16,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
-
+  const [buttonHover, setButtonHover] = useState(null);
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }) => {
@@ -109,7 +109,6 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             </svg>
           </NavLink>
         </div>
-
         {/* Links */}
         <div className="space-y-8">
           {/* Pages group */}
@@ -331,7 +330,16 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             </ul>
           </div>
         </div>
-
+        <button
+          className={`px-3 py-2 rounded-sm mb-0.5 mt-auto last:mb-0 flex items-center text-slate-200 hover:text-white truncate transition duration-150 hover:bg-slate-900`}
+          onMouseEnter={() => setButtonHover(1)}
+          onMouseLeave={() => setButtonHover(null)}
+        >
+          <MdLogout className={`w-6 h-6 shrink-0 transition-all ${buttonHover === 1 ? "text-indigo-600" : ""}`} />
+          <span className="ml-3 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+            Salir
+          </span>
+        </button>
         {/* Expand / collapse button */}
         <div className="justify-end hidden pt-3 mt-auto lg:inline-flex 2xl:hidden">
           <div className="px-3 py-2">

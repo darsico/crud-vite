@@ -1,117 +1,145 @@
-import React from 'react';
-
-import Image01 from '../../images/user-36-05.jpg';
-import Image02 from '../../images/user-36-06.jpg';
-import Image03 from '../../images/user-36-07.jpg';
-import Image04 from '../../images/user-36-08.jpg';
-import Image05 from '../../images/user-36-09.jpg';
+import React, { useState } from "react";
+import { BiSearch } from "react-icons/bi";
+import ModalAdd from "../../components/ModalAdd/ModalAdd";
+import DeleteModal from "../../components/DeleteHandle/DeleteModal";
+import { deleteClients, getClients } from "../../clients/UseClients";
 
 function DashboardCard10() {
+  const [openDelete, setOpenDelete] = useState(false);
+  const [currentId, setCurrentId] = useState(null);
 
-  const customers = [
-    {
-      id: '0',
-      image: Image01,
-      name: 'Alex Shatov',
-      email: 'alexshatov@gmail.com',
-      location: '🇺🇸',
-      spent: '$2,890.66',
-    },
-    {
-      id: '1',
-      image: Image02,
-      name: 'Philip Harbach',
-      email: 'philip.h@gmail.com',
-      location: '🇩🇪',
-      spent: '$2,767.04',
-    },
-    {
-      id: '2',
-      image: Image03,
-      name: 'Mirko Fisuk',
-      email: 'mirkofisuk@gmail.com',
-      location: '🇫🇷',
-      spent: '$2,996.00',
-    },
-    {
-      id: '3',
-      image: Image04,
-      name: 'Olga Semklo',
-      email: 'olga.s@cool.design',
-      location: '🇮🇹',
-      spent: '$1,220.66',
-    },
-    {
-      id: '4',
-      image: Image05,
-      name: 'Burak Long',
-      email: 'longburak@gmail.com',
-      location: '🇬🇧',
-      spent: '$1,890.66',
-    },
-  ];
+  const [deleteCostumer] = deleteClients();
+  const { data, loading, error } = getClients();
+
+  const handleDeleteModalClick = () => {
+    setOpenDelete(true);
+  };
+
+  const handleServerDelete = () => {
+    const id = currentId;
+    deleteCostumer({ variables: { id } });
+  };
+
+  if (error) return <span>{error}</span>;
 
   return (
-    <div className="col-span-full xl:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200">
-      <header className="px-5 py-4 border-b border-slate-100">
-        <h2 className="font-semibold text-slate-800">Customers</h2>
-      </header>
-      <div className="p-3">
-
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="table-auto w-full">
-            {/* Table header */}
-            <thead className="text-xs font-semibold uppercase text-slate-400 bg-slate-50">
-              <tr>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-left">Name</div>
-                </th>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-left">Email</div>
-                </th>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-left">Spent</div>
-                </th>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-center">Country</div>
-                </th>
-              </tr>
-            </thead>
-            {/* Table body */}
-            <tbody className="text-sm divide-y divide-slate-100">
-              {
-                customers.map(customer => {
-                  return (
-                    <tr key={customer.id}>
-                      <td className="p-2 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="w-10 h-10 shrink-0 mr-2 sm:mr-3">
-                            <img className="rounded-full" src={customer.image} width="40" height="40" alt={customer.name} />
-                          </div>
-                          <div className="font-medium text-slate-800">{customer.name}</div>
-                        </div>
-                      </td>
-                      <td className="p-2 whitespace-nowrap">
-                        <div className="text-left">{customer.email}</div>
-                      </td>
-                      <td className="p-2 whitespace-nowrap">
-                        <div className="text-left font-medium text-green-500">{customer.spent}</div>
-                      </td>
-                      <td className="p-2 whitespace-nowrap">
-                        <div className="text-lg text-center">{customer.location}</div>
-                      </td>
-                    </tr>
-                  )
-                })
-              }
-            </tbody>
-          </table>
-
+    <>
+      <div className="col-span-full xl:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200">
+        <header className="px-5 py-4 border-b border-slate-100 grid grid-cols-3 md:grid-cols-[max-content_1fr_min-content] grid-rows-2 md:grid-rows-1 items-center gap-y-3 gap-x-4">
+          <h2 className="font-semibold text-slate-800 text-xl w-fit col-span-2  md:col-span-1">Todos los clientes</h2>
+          <div className="relative  text-gray-600 flex justify-center items-center w-fit row-start-2 row-end-3 col-span-3 md:row-start-1 md:row-end-2 md:col-start-2 md:col-span-2 ">
+            <input
+              className="border-2 border-gray-300 bg-white h-8 rounded-full text-sm focus:outline-none w-full"
+              type="search"
+              name="search"
+              placeholder="Buscar clientes"
+            />
+            <button type="submit" className="-ml-8 ">
+              <BiSearch className="text-xl text-slate-500 hover:text-slate-900 transition-all" />
+            </button>
+          </div>
+          <ModalAdd />
+        </header>
+        <div className="p-3">
+          {data && data.querycostumers.length === 0 ? (
+            <section className="flex items-center justify-center h-[50vh]">
+              <p className="text-2xl font-light">Agrega nuevos clientes porfavor</p>
+            </section>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="table-auto w-full">
+                {/* Table header */}
+                <thead className="text-xs font-semibold uppercase text-slate-400 bg-slate-50">
+                  <tr>
+                    <th className="p-2 whitespace-nowrap">
+                      <div className="font-semibold text-left">Nombre</div>
+                    </th>
+                    <th className="p-2 whitespace-nowrap">
+                      <div className="font-semibold text-left">Email</div>
+                    </th>
+                    <th className="p-2 whitespace-nowrap">
+                      <div className="font-semibold text-left">Teléfono</div>
+                    </th>
+                    <th className="p-2 whitespace-nowrap">
+                      <div className="font-semibold text-left">Total Comprado</div>
+                    </th>
+                    <th className="p-2 whitespace-nowrap">
+                      <div className="font-semibold text-center">Estado</div>
+                    </th>
+                    <th className="p-2 whitespace-nowrap"></th>
+                  </tr>
+                </thead>
+                {/* Table body */}
+                <tbody className="text-sm divide-y divide-slate-100">
+                  {data &&
+                    data.querycostumers.map((customer) => {
+                      return (
+                        <tr key={customer.id}>
+                          <td className="p-2 whitespace-nowrap">
+                            <button className="text-center font-medium text-slate-800">{customer.name}</button>
+                          </td>
+                          <td className="p-2 whitespace-nowrap">
+                            <div className="text-left">{customer.email}</div>
+                          </td>
+                          <td className="p-2 whitespace-nowrap">
+                            <div className="text-left ">{customer.phoneNumber}</div>
+                          </td>
+                          <td className="p-2 whitespace-nowrap">
+                            <div className="text-left">{customer.buyingAmount || "Aun no ha comprado"}</div>
+                          </td>
+                          <td className="p-2 whitespace-nowrap">
+                            <div className="text-lg text-center">
+                              {customer.isOwing ? (
+                                <button
+                                  type="button"
+                                  className="text-red-600 bg-red-100 rounded-lg px-2 text-sm hover:bg-red-200 transition-all"
+                                >
+                                  Debe
+                                </button>
+                              ) : (
+                                <button
+                                  type="button"
+                                  className="text-green-700 bg-green-100 rounded-lg px-2 text-sm hover:bg-green-200 transition-all "
+                                >
+                                  Sin Deudas
+                                </button>
+                              )}
+                            </div>
+                          </td>
+                          <td className="p-2 whitespace-nowrap">
+                            <div className="text-xs text-slate-400  flex items-center justify-center gap-4 text-center self-center mx-auto">
+                              <button className="hover:text-slate-800">Editar</button>
+                              <button className="hover:text-red-800" title="Eliminar" onClick={handleDeleteModalClick}>
+                                {
+                                  <DeleteModal
+                                    openDelete={openDelete}
+                                    setOpenDelete={setOpenDelete}
+                                    type="cliente"
+                                    deleteTitle="¿Deseas eliminar este cliente?"
+                                    handleServerDelete={handleServerDelete}
+                                    uniqueId={customer.id}
+                                    setCurrentId={setCurrentId}
+                                  />
+                                  // <MdDeleteForever
+                                  //   className="text-xl"
+                                  //   id={customer.id}
+                                  //   onClick={(e) => handleDeleteClick(e)}
+                                  // />
+                                }
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
+          )}
+          {/* Table */}
         </div>
-
       </div>
-    </div>
+    </>
   );
 }
 
