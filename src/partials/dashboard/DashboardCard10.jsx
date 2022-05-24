@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { MdDeleteForever } from "react-icons/md";
 import { BiSearch } from "react-icons/bi";
 import ModalAdd from "../../components/ModalAdd/ModalAdd";
 import DeleteModal from "../../components/DeleteHandle/DeleteModal";
@@ -13,7 +12,6 @@ function DashboardCard10() {
   const { data, loading, error } = getClients();
 
   const handleDeleteModalClick = () => {
-    console.log("clicked");
     setOpenDelete(true);
   };
 

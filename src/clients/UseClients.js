@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from "@apollo/client";
-import { CREATE_COSTUMER, DELETE_COSTUMER } from "./graphql-mutations";
+import { CREATE_COSTUMER, DELETE_COSTUMER, UPDATE_COSTUMER } from "./graphql-mutations";
 import { GET_COSTUMERS } from "./graphql-queries";
 
 export const getClients = () => {
@@ -16,6 +16,13 @@ export const deleteClients = () => {
 
 export const addClient = () => {
   const result = useMutation(CREATE_COSTUMER, {
+    refetchQueries: [{ query: GET_COSTUMERS }],
+  });
+  return result;
+};
+
+export const editClient = () => {
+  const result = useMutation(UPDATE_COSTUMER, {
     refetchQueries: [{ query: GET_COSTUMERS }],
   });
   return result;

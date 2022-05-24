@@ -22,3 +22,15 @@ export const CREATE_COSTUMER = gql`
     }
   }
 `;
+
+export const UPDATE_COSTUMER = gql`
+  mutation updateCostumer($id: [ID!], $email: String, $name: String, $phoneNumber: String) {
+    updatecostumers(input: { filter: { id: $id }, set: { email: $email, name: $name, phoneNumber: $phoneNumber } }) {
+      costumers {
+        email
+        name
+        phoneNumber
+      }
+    }
+  }
+`;

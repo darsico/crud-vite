@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloProvider, gql, HttpLink, InMemoryCache } from "@apollo/client";
+import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from "@apollo/client";
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -17,5 +17,6 @@ ReactDOM.render(
       <App />
     </Router>
   </ApolloProvider>,
+
   document.getElementById("root")
 );

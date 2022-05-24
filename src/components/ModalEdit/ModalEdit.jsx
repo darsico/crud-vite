@@ -1,36 +1,41 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
-import { addClient } from "../../clients/UseClients";
+import { editClient } from "../../clients/UseClients";
 
-export default function ModalAdd() {
-  const [createClient] = addClient();
+export default function ModalEdit({ customer }) {
   const [open, setOpen] = useState(false);
-
   const cancelButtonRef = useRef(null);
-  const [contactInfo, setContactInfo] = useState({
-    name: "",
-    email: "",
-    phoneNumber: "",
+  const [editContactInfo, setEditContactInfo] = useState({
+    id: customer.id,
+    name: customer.name,
+    email: customer.email,
+    phoneNumber: customer.phoneNumber,
   });
+  const [updateCostumer] = editClient();
 
   const handleChange = (event) => {
-    setContactInfo({ ...contactInfo, [event.target.name]: event.target.value });
+    setEditContactInfo({ ...editContactInfo, [event.target.name]: event.target.value });
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { name, email, phoneNumber } = contactInfo;
-    createClient({ variables: { name, email, phoneNumber } });
-    setContactInfo({ name: "", email: "", phoneNumber: "" });
+    const { id, name, email, phoneNumber } = editContactInfo;
+    updateCostumer({ variables: { id, name, email, phoneNumber } });
+  };
+  const handleCancelClick = () => {
+    setEditContactInfo({
+      id: customer.id,
+      name: customer.name,
+      email: customer.email,
+      phoneNumber: customer.phoneNumber,
+    });
+    setOpen(false);
   };
   return (
     <>
-      <button
-        className="flex items-center justify-center gap-1 bg-slate-100 rounded-full px-3  hover:bg-slate-200 transition-all text-sm ml-auto col-start-4 col-end-5 "
-        onClick={() => setOpen(true)}
-      >
-        <span className="text-xl">+</span> Nuevo Cliente
+      <button className="hover:text-slate-800" onClick={() => setOpen(true)}>
+        Editar
       </button>
 
       <Transition.Root show={open} as={Fragment}>
@@ -62,9 +67,9 @@ export default function ModalAdd() {
                     <div className="md:grid md:grid-cols-3 md:gap-6">
                       <div className="md:col-span-1">
                         <div className="px-4 sm:px-0">
-                          <h3 className="text-lg font-medium leading-6 text-gray-900">Agregar cliente</h3>
+                          <h3 className="text-lg font-medium leading-6 text-gray-900">Editar cliente</h3>
                           <p className="mt-1 text-sm text-gray-600">
-                            Llena todos los campos para agregar al cliente, porfavor.
+                            Haz click en el campo que quieres editar por favor.
                           </p>
                         </div>
                       </div>
@@ -78,12 +83,13 @@ export default function ModalAdd() {
                                     Nombres y Apellidos
                                   </label>
                                   <input
+                                    placeholder={customer.name}
                                     type="text"
                                     name="name"
                                     id="first-name"
                                     autoComplete="given-name"
                                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                    value={contactInfo.name}
+                                    value={editContactInfo.name}
                                     onChange={handleChange}
                                   />
                                 </div>
@@ -93,12 +99,13 @@ export default function ModalAdd() {
                                     Correo electrónico
                                   </label>
                                   <input
+                                    placeholder={customer.email}
                                     type="email"
                                     name="email"
                                     id="email-address"
                                     autoComplete="email"
                                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                    value={contactInfo.email}
+                                    value={editContactInfo.email}
                                     onChange={handleChange}
                                   />
                                 </div>
@@ -108,12 +115,13 @@ export default function ModalAdd() {
                                     Número de teléfono
                                   </label>
                                   <input
+                                    placeholder={customer.phoneNumber}
                                     type="text"
                                     name="phoneNumber"
                                     id="phone-number"
                                     autoComplete="phoneNumber"
                                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                    value={contactInfo.phoneNumber}
+                                    value={editContactInfo.phoneNumber}
                                     onChange={handleChange}
                                   />
                                 </div>
@@ -124,12 +132,12 @@ export default function ModalAdd() {
                                 type="submit"
                                 className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                                 onClick={() => setOpen(false)}
-                                value="Agregar"
+                                value="Editar"
                               ></input>
                               <button
                                 type="button"
                                 className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                                onClick={() => setOpen(false)}
+                                onClick={handleCancelClick}
                                 ref={cancelButtonRef}
                               >
                                 Cancelar

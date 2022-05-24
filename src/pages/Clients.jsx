@@ -4,6 +4,7 @@ import { BiSearch } from "react-icons/bi";
 import { deleteClients, getClients } from "../clients/UseClients";
 import DeleteModal from "../components/DeleteHandle/DeleteModal";
 import ModalAdd from "../components/ModalAdd/ModalAdd";
+import ModalEdit from "../components/ModalEdit/ModalEdit";
 
 const Clients = () => {
   const [openDelete, setOpenDelete] = useState(false);
@@ -109,24 +110,17 @@ const Clients = () => {
                           </td>
                           <td className="p-2 whitespace-nowrap">
                             <div className="text-xs text-slate-400  flex items-center justify-center gap-4 text-center self-center mx-auto">
-                              <button className="hover:text-slate-800">Editar</button>
+                              <ModalEdit customer={customer} />
                               <button className="hover:text-red-800" title="Eliminar" onClick={handleDeleteModalClick}>
-                                {
-                                  <DeleteModal
-                                    openDelete={openDelete}
-                                    setOpenDelete={setOpenDelete}
-                                    type="cliente"
-                                    deleteTitle="¿Deseas eliminar este cliente?"
-                                    handleServerDelete={handleServerDelete}
-                                    uniqueId={customer.id}
-                                    setCurrentId={setCurrentId}
-                                  />
-                                  // <MdDeleteForever
-                                  //   className="text-xl"
-                                  //   id={customer.id}
-                                  //   onClick={(e) => handleDeleteClick(e)}
-                                  // />
-                                }
+                                <DeleteModal
+                                  openDelete={openDelete}
+                                  setOpenDelete={setOpenDelete}
+                                  type="cliente"
+                                  deleteTitle="¿Deseas eliminar este cliente?"
+                                  handleServerDelete={handleServerDelete}
+                                  uniqueId={customer.id}
+                                  setCurrentId={setCurrentId}
+                                />
                               </button>
                             </div>
                           </td>
@@ -144,4 +138,4 @@ const Clients = () => {
   );
 };
 
-export default DashboardCard10;
+export default Clients;
