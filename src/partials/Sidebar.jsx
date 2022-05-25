@@ -4,7 +4,8 @@ import { NavLink, useLocation } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
 import { FaUsers, FaHandshake } from "react-icons/fa";
 import { IoStorefront, IoAnalyticsSharp } from "react-icons/io5";
-import { MdOutlineAttachMoney, MdLogout } from "react-icons/md";
+import { MdOutlineAttachMoney } from "react-icons/md";
+import { BiPowerOff } from "react-icons/bi";
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
   const { pathname } = location;
@@ -66,7 +67,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
         }`}
       >
         {/* Sidebar header */}
-        <div className="flex justify-between pr-3 mb-10 sm:px-2">
+        <div className="flex justify-between pr-3 mb-6 sm:px-2">
           {/* Close button */}
           <button
             ref={trigger}
@@ -122,7 +123,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               </span>
               <span className="lg:hidden lg:sidebar-expanded:block 2xl:block">Principal</span>
             </h3>
-            <ul className="mt-3">
+            <ul className="mt-2">
               {/* Dashboard */}
               <li className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${pathname === "/" && "bg-slate-900"}`}>
                 <NavLink
@@ -230,7 +231,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               </span>
               <span className="lg:hidden lg:sidebar-expanded:block 2xl:block">Negocio</span>
             </h3>
-            <ul className="mt-3">
+            <ul className="mb-2">
               <li className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${pathname.includes("clients") && "bg-slate-900"}`}>
                 <NavLink
                   end
@@ -331,11 +332,11 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </div>
         </div>
         <button
-          className={`px-3 py-2 rounded-sm mb-0.5 mt-auto last:mb-0 flex items-center text-slate-200 hover:text-white truncate transition duration-150 hover:bg-slate-900`}
+          className={` px-3 py-5 rounded-sm mb-0.5 mt-auto last:mb-0 flex items-center text-slate-200 hover:text-white truncate transition duration-150 hover:bg-slate-900`}
           onMouseEnter={() => setButtonHover(1)}
           onMouseLeave={() => setButtonHover(null)}
         >
-          <MdLogout className={`w-6 h-6 shrink-0 transition-all ${buttonHover === 1 ? "text-indigo-600" : ""}`} />
+          <BiPowerOff className={`w-6 h-6 shrink-0 transition-all  ${buttonHover === 1 ? "text-indigo-600" : ""}`} />
           <span className="ml-3 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
             Salir
           </span>

@@ -1,30 +1,27 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { AiFillWarning } from "react-icons/ai";
 import { MdDeleteForever } from "react-icons/md";
 
-export default function DeleteModal({
-  openDelete,
-  setOpenDelete,
-  deleteTitle,
-  type,
-  handleServerDelete,
-  uniqueId,
-  setCurrentId,
-}) {
-  useEffect(() => {
-    setCurrentId(uniqueId);
-  }, []);
-
+export default function DeleteModal({ deleteTitle, type, handleServerDelete, data }) {
+  const [openDelete, setOpenDelete] = useState(false);
   const cancelButtonRef = useRef(null);
   const handleDeleteButton = () => {
-    handleServerDelete();
+    const { id, name } = data;
+    handleServerDelete(id);
     setOpenDelete(false);
+  };
+
+  const handleDeleteModalClick = () => {
+    setOpenDelete(true);
   };
   return (
     <>
-      <MdDeleteForever className="text-xl" />
+      <button className="hover:text-red-800" title="Eliminar" onClick={handleDeleteModalClick}>
+        <MdDeleteForever className="text-xl" />
+      </button>
+
       <Transition.Root show={openDelete} as={Fragment}>
         <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setOpenDelete}>
           <Transition.Child
