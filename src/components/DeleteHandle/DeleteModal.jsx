@@ -8,7 +8,7 @@ export default function DeleteModal({ deleteTitle, type, handleServerDelete, dat
   const [openDelete, setOpenDelete] = useState(false);
   const cancelButtonRef = useRef(null);
   const handleDeleteButton = () => {
-    const { id, name } = data;
+    const { id } = data;
     handleServerDelete(id);
     setOpenDelete(false);
   };

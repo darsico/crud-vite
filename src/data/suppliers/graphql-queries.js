@@ -1,13 +1,14 @@
 import { gql } from "@apollo/client";
-export const GET_COSTUMERS = gql`
+export const GET_SUPPLIERS = gql`
   query {
-    querycostumers {
+    querySupplier {
       id
       name
       email
       phoneNumber
-      buyingAmount
-      isOwing
+      address
+      ruc
+      companyName
     }
   }
 `;

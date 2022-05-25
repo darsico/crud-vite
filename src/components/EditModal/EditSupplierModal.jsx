@@ -1,35 +1,46 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { editSupplier } from "../../data/suppliers/UseSuppliers";
 
-import { editClient } from "../../clients/UseClients";
-
-export default function ModalEdit({ customer }) {
+export default function EditSupplierMOdal({ data }) {
+  const initialData = {
+    id: data.id,
+    name: data.name,
+    email: data.email,
+    phoneNumber: data.phoneNumber,
+    ruc: data.ruc,
+    address: data.address,
+    companyName: data.companyName,
+  };
   const [open, setOpen] = useState(false);
   const cancelButtonRef = useRef(null);
-  const [editContactInfo, setEditContactInfo] = useState({
-    id: customer.id,
-    name: customer.name,
-    email: customer.email,
-    phoneNumber: customer.phoneNumber,
-  });
-  const [updateCostumer] = editClient();
+  const [editContactInfo, setEditContactInfo] = useState(initialData);
+  const [updateSupplier] = editSupplier();
 
   const handleChange = (event) => {
-    setEditContactInfo({ ...editContactInfo, [event.target.name]: event.target.value });
+    const { type, name, value } = event.target;
+    setEditContactInfo((input) => {
+      const nextInput = { ...input };
+
+      switch (type) {
+        case "number":
+          nextInput[name] = Number(value);
+          break;
+        default:
+          nextInput[name] = value;
+      }
+      return nextInput;
+    });
+    console.log(editContactInfo);
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { id, name, email, phoneNumber } = editContactInfo;
-    updateCostumer({ variables: { id, name, email, phoneNumber } });
+    const { id, name, email, phoneNumber, ruc, address, companyName } = editContactInfo;
+    updateSupplier({ variables: { id, name, email, phoneNumber, ruc, address, companyName } });
   };
   const handleCancelClick = () => {
-    setEditContactInfo({
-      id: customer.id,
-      name: customer.name,
-      email: customer.email,
-      phoneNumber: customer.phoneNumber,
-    });
+    setEditContactInfo(initialData);
     setOpen(false);
   };
   return (
@@ -40,15 +51,7 @@ export default function ModalEdit({ customer }) {
 
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setOpen}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
+          <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
             <div className="fixed inset-0 bg-slate-900 bg-opacity-30 transition-opacity" />
           </Transition.Child>
           <div className="fixed z-50 inset-0 overflow-y-auto">
@@ -67,10 +70,8 @@ export default function ModalEdit({ customer }) {
                     <div className="md:grid md:grid-cols-3 md:gap-6">
                       <div className="md:col-span-1">
                         <div className="px-4 sm:px-0">
-                          <h3 className="text-lg font-medium leading-6 text-gray-900">Editar cliente</h3>
-                          <p className="mt-1 text-sm text-gray-600">
-                            Haz click en el campo que quieres editar por favor.
-                          </p>
+                          <h3 className="text-lg font-medium leading-6 text-gray-900">Editar proveedor</h3>
+                          <p className="mt-1 text-sm text-gray-600">Haz click en el campo que quieres editar por favor.</p>
                         </div>
                       </div>
                       <div className="mt-5 md:mt-0 md:col-span-2">
@@ -79,11 +80,26 @@ export default function ModalEdit({ customer }) {
                             <div className="px-4 py-5 bg-white sm:p-6">
                               <div className="grid grid-cols-6 gap-6">
                                 <div className="col-span-6 ">
-                                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                                    Nombres y Apellidos
+                                  <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">
+                                    Empresa
                                   </label>
                                   <input
-                                    placeholder={customer.name}
+                                    placeholder={data.companyName}
+                                    type="text"
+                                    name="companyName"
+                                    id="companyName"
+                                    autoComplete="given-name"
+                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                    value={editContactInfo.companyName}
+                                    onChange={handleChange}
+                                  />
+                                </div>
+                                <div className="col-span-6 ">
+                                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                                    Nombre completo de Representante
+                                  </label>
+                                  <input
+                                    placeholder={data.name}
                                     type="text"
                                     name="name"
                                     id="first-name"
@@ -99,7 +115,7 @@ export default function ModalEdit({ customer }) {
                                     Correo electrónico
                                   </label>
                                   <input
-                                    placeholder={customer.email}
+                                    placeholder={data.email}
                                     type="email"
                                     name="email"
                                     id="email-address"
@@ -115,7 +131,7 @@ export default function ModalEdit({ customer }) {
                                     Número de teléfono
                                   </label>
                                   <input
-                                    placeholder={customer.phoneNumber}
+                                    placeholder={data.phoneNumber}
                                     type="text"
                                     name="phoneNumber"
                                     id="phone-number"
@@ -124,6 +140,27 @@ export default function ModalEdit({ customer }) {
                                     value={editContactInfo.phoneNumber}
                                     onChange={handleChange}
                                   />
+                                </div>
+                                <div className="col-span-6">
+                                  <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                                    Dirección
+                                  </label>
+                                  <input
+                                    placeholder={data.address}
+                                    type="text"
+                                    name="address"
+                                    id="address"
+                                    autoComplete="address"
+                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                    value={editContactInfo.address}
+                                    onChange={handleChange}
+                                  />
+                                </div>
+                                <div className="col-span-6">
+                                  <label htmlFor="ruc" className="block text-sm font-medium text-gray-700">
+                                    RUC
+                                  </label>
+                                  <input placeholder={data.ruc} type="number" name="ruc" id="ruc" autoComplete="ruc" className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" value={editContactInfo.ruc} onChange={handleChange} />
                                 </div>
                               </div>
                             </div>

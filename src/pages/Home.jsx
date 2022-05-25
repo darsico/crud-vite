@@ -9,7 +9,7 @@ import DashboardCard06 from "../partials/dashboard/DashboardCard06";
 import DashboardCard07 from "../partials/dashboard/DashboardCard07";
 import DashboardCard08 from "../partials/dashboard/DashboardCard08";
 import DashboardCard09 from "../partials/dashboard/DashboardCard09";
-import DashboardCard10 from "../partials/dashboard/DashboardCard10";
+
 import DashboardCard11 from "../partials/dashboard/DashboardCard11";
 import DashboardCard12 from "../partials/dashboard/DashboardCard12";
 import DashboardCard13 from "../partials/dashboard/DashboardCard13";
@@ -59,8 +59,8 @@ const Home = () => {
         <DashboardCard08 />
         {/* Stacked bar chart (Sales VS Refunds) */}
         <DashboardCard09 />
-        {/* Card (Customers) */}
-        <DashboardCard10 />
+        {/* Card (Customers)
+        <DashboardCard10 /> */}
         {/* Card (Reasons for Refunds) */}
         <DashboardCard11 />
         {/* Card (Recent Activity) */}
