@@ -7,6 +7,7 @@ import DeleteModal from "../components/DeleteHandle/DeleteModal";
 
 import SearchBar from "../components/SearchBar/SearchBar";
 import { deleteSuppliers, getSuppliers } from "../data/suppliers/UseSuppliers";
+import Spinner from "../components/Spinner/Spinner";
 
 const Suppliers = () => {
   const [filteredData, setFilteredData] = useState([]);
@@ -25,7 +26,8 @@ const Suppliers = () => {
   };
 
   if (error) return <span>{error}</span>;
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
+
   const querySuppliers = data?.querySupplier;
   return (
     <>
@@ -38,7 +40,7 @@ const Suppliers = () => {
         <div className="p-3">
           {data && filteredData.length === 0 ? (
             <section className="flex items-center justify-center h-[50vh]">
-              <p className="text-2xl font-light">Agrega nuevos clientes porfavor</p>
+              <p className="text-2xl font-light">Agrega nuevos proveedores porfavor</p>
             </section>
           ) : (
             <div className="overflow-x-auto">

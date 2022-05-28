@@ -5,6 +5,7 @@ import DeleteModal from "../components/DeleteHandle/DeleteModal";
 import EditClientModal from "../components/EditModal/EditClientModal";
 
 import SearchBar from "../components/SearchBar/SearchBar";
+import Spinner from "../components/Spinner/Spinner";
 import { deleteClients, getClients } from "../data/clients/UseClients";
 
 const Clients = () => {
@@ -24,7 +25,7 @@ const Clients = () => {
   };
 
   if (error) return <span>{error}</span>;
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
   const queryCostumers = data?.queryCostumer;
   return (
     <>
@@ -84,17 +85,11 @@ const Clients = () => {
                           <td className="p-2 whitespace-nowrap">
                             <div className="text-lg text-center">
                               {customer.isOwing ? (
-                                <button
-                                  type="button"
-                                  className="text-red-600 bg-red-100 rounded-lg px-2 text-sm hover:bg-red-200 transition-all"
-                                >
+                                <button type="button" className="text-red-600 bg-red-100 rounded-lg px-2 text-sm hover:bg-red-200 transition-all">
                                   Debe
                                 </button>
                               ) : (
-                                <button
-                                  type="button"
-                                  className="text-green-700 bg-green-100 rounded-lg px-2 text-sm hover:bg-green-200 transition-all "
-                                >
+                                <button type="button" className="text-green-700 bg-green-100 rounded-lg px-2 text-sm hover:bg-green-200 transition-all ">
                                   Sin Deudas
                                 </button>
                               )}
@@ -106,12 +101,7 @@ const Clients = () => {
                                 <EditClientModal customer={customer} />
                               </span>
                               <span>
-                                <DeleteModal
-                                  type="cliente"
-                                  deleteTitle="¿Deseas eliminar este cliente?"
-                                  handleServerDelete={handleServerDelete}
-                                  data={customer}
-                                />
+                                <DeleteModal type="cliente" deleteTitle="¿Deseas eliminar este cliente?" handleServerDelete={handleServerDelete} data={customer} />
                               </span>
                             </div>
                           </td>

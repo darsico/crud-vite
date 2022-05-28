@@ -4,7 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 
 import { addSupplier } from "../../data/suppliers/UseSuppliers";
 
-export default function AddSupplierModal() {
+export default function AddSupplierModal({ childrenModal, setData, created }) {
   const initialState = {
     name: "",
     email: "",
@@ -18,10 +18,6 @@ export default function AddSupplierModal() {
 
   const cancelButtonRef = useRef(null);
   const [contactInfo, setContactInfo] = useState(initialState);
-
-  const cleanModal = () => {
-    setContactInfo(initialState);
-  };
 
   const handleChange = (event) => {
     const { name, type, value } = event.target;
@@ -43,12 +39,21 @@ export default function AddSupplierModal() {
     const { name, email, phoneNumber, companyName, ruc, address } = contactInfo;
     createSupplier({ variables: { name, email, phoneNumber, companyName, ruc, address } });
     setContactInfo(initialState);
+    if (childrenModal) {
+      setOpen(false);
+    }
   };
   return (
     <>
-      <button className="flex items-center justify-center gap-1 bg-slate-100 rounded-full px-3  hover:bg-slate-200 transition-all text-sm ml-auto col-start-4 col-end-5 " onClick={() => setOpen(true)}>
-        <span className="text-xl">+</span> Nuevo proveedor
-      </button>
+      {childrenModal ? (
+        <button className="text-xs font-normal cursor-pointer flex items-center justify-center gap-1 hover:font-bold transition-all" onClick={() => setOpen(true)}>
+          <span className="text-lg self-center ">+</span> <span className="mt-1">Proveedor</span>
+        </button>
+      ) : (
+        <button className="flex items-center justify-center gap-1 bg-slate-100 rounded-full px-3  hover:bg-slate-200 transition-all text-sm ml-auto col-start-4 col-end-5 " onClick={() => setOpen(true)}>
+          <span className="text-xl">+</span> Nuevo proveedor
+        </button>
+      )}
 
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setOpen}>
