@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import AddSupplierModal from "../components/AddModal/AddSupplierModal";
-
 import EditSupplierModal from "../components/EditModal/EditSupplierModal.jsx";
-
 import DeleteModal from "../components/DeleteHandle/DeleteModal";
-
-import SearchBar from "../components/SearchBar/SearchBar";
 import { deleteSuppliers, getSuppliers } from "../data/suppliers/UseSuppliers";
 import Spinner from "../components/Spinner/Spinner";
-
+import SearchBarReact from "../components/SearchBar/SearchBarReact";
+import { useSnapshot } from "valtio";
+import { supplier } from "../store";
 const Suppliers = () => {
   const [filteredData, setFilteredData] = useState([]);
+
+  const { setSuppliers } = useSnapshot(supplier);
 
   const [deleteSupplier] = deleteSuppliers();
   const { data, loading, error } = getSuppliers();
@@ -18,6 +18,7 @@ const Suppliers = () => {
   useEffect(() => {
     if (data) {
       setFilteredData(querySuppliers);
+      setSuppliers(querySuppliers);
     }
   }, [data]);
 
@@ -29,12 +30,14 @@ const Suppliers = () => {
   if (loading) return <Spinner />;
 
   const querySuppliers = data?.querySupplier;
+
   return (
     <>
-      <div className="col-span-full xl:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200">
+      <div className="bg-white border rounded-sm shadow-lg col-span-full xl:col-span-6 border-slate-200">
         <header className="px-5 py-4 border-b border-slate-100 grid grid-cols-3 md:grid-cols-[max-content_1fr_min-content] grid-rows-2 md:grid-rows-1 items-center gap-y-3 gap-x-4">
-          <h2 className="font-semibold text-slate-800 text-xl w-fit col-span-2  md:col-span-1">Todos los proveedores</h2>
-          <SearchBar data={querySuppliers} setData={setFilteredData} />
+          <h2 className="col-span-2 text-xl font-semibold text-slate-800 w-fit md:col-span-1">Todos los proveedores</h2>
+          {/* <SearchBar data={querySuppliers} setData={setFilteredData} /> */}
+          <SearchBarReact data={querySuppliers} setData={setFilteredData} loading={loading} />
           <AddSupplierModal />
         </header>
         <div className="p-3">
@@ -44,7 +47,7 @@ const Suppliers = () => {
             </section>
           ) : (
             <div className="overflow-x-auto">
-              <table className="table-auto w-full">
+              <table className="w-full table-auto">
                 {/* Table header */}
                 <thead className="text-xs font-semibold uppercase text-slate-400 bg-slate-50">
                   <tr>
@@ -73,14 +76,14 @@ const Suppliers = () => {
                 <tbody className="text-sm divide-y divide-slate-100">
                   {data &&
                     filteredData.map((singleData) => {
-                      const { companyName } = singleData;
+                      const { name } = singleData;
                       return (
                         <tr key={singleData.id}>
                           <td className="p-2 whitespace-nowrap">
-                            <button className="text-center font-medium text-slate-800">{companyName || "No ingreso empresa"}</button>
+                            <button className="font-medium text-center text-slate-800">{name || "No ingreso empresa"}</button>
                           </td>
                           <td className="p-2 whitespace-nowrap">
-                            <button className="text-center font-medium text-slate-800">{singleData.name || "No ingreso nombre"}</button>
+                            <button className="font-medium text-center text-slate-800">{singleData.contactPerson || "No ingreso nombre"}</button>
                           </td>
                           <td className="p-2 whitespace-nowrap">
                             <div className="text-left">{singleData.email || "No ingreso email"} </div>
@@ -96,7 +99,7 @@ const Suppliers = () => {
                           </td>
 
                           <td className="p-2 whitespace-nowrap">
-                            <div className="text-xs text-slate-400  flex items-center justify-center gap-4 text-center self-center mx-auto">
+                            <div className="flex items-center self-center justify-center gap-4 mx-auto text-xs text-center text-slate-400">
                               <span>
                                 <EditSupplierModal data={singleData} />
                               </span>

@@ -6,12 +6,16 @@ import "./charts/ChartjsConfig";
 
 // Import pages
 import Dashboard from "./pages/Dashboard";
+import { SupplierProvider } from "./context/SupplierProvider";
+import { CategoryProvider } from "./context/CategoryProvider";
 
 function App() {
   return (
-    <div>
-      <Dashboard />
-    </div>
+    <CategoryProvider>
+      <SupplierProvider>
+        <Dashboard />
+      </SupplierProvider>
+    </CategoryProvider>
   );
 }
 

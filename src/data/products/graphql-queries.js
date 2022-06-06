@@ -9,7 +9,7 @@ export const GET_PRODUCTS = gql`
       stock
       supplier {
         id
-        companyName
+        name
       }
       category {
         id

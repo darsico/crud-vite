@@ -4,11 +4,11 @@ export const GET_SUPPLIERS = gql`
     querySupplier {
       id
       name
+      contactPerson
       email
       phoneNumber
       address
       ruc
-      companyName
     }
   }
 `;

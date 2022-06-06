@@ -20,7 +20,9 @@
     "react-hook-form": "^7.31.2",
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.2.1",
-    "react-transition-group": "^4.4.1"
+    "react-select": "^5.3.2",
+    "react-transition-group": "^4.4.1",
+    "valtio": "^1.6.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",

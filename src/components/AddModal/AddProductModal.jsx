@@ -1,19 +1,22 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { addProducts } from "../../data/products/UseProducts";
 import { getSuppliers } from "../../data/suppliers/UseSuppliers";
-// import UseFrontQuery from "../../hooks/UseFrontQuery";
-import SearchBar from "../SearchBar/SearchBar";
 import { getCategories } from "../../data/categories/UseCategories";
 import AddSupplierModal from "./AddSupplierModal";
+import AddCategoryModal from "./AddCategoryModal";
+import FormSearchBar from "../SearchBar/FormSearchBar";
+import { useSnapshot } from "valtio";
+import { supplier } from "../../store";
 
 const AddProductModal = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [supplier, setSupplier] = useState([]);
-  const [category, setCategory] = useState([]);
+  const [dataSupplier, setSupplierData] = useState({});
+  const [category, setCategory] = useState({});
   const { register, handleSubmit, reset } = useForm();
   const [createProduct] = addProducts();
+  const { supplierSelected } = useSnapshot(supplier);
 
   const { data: suppliersData, loading: suppliersLoading, error: suppliersError } = getSuppliers();
   const { data: categoryData, loading: categoryLoading, error: categoryError } = getCategories();
@@ -26,9 +29,7 @@ const AddProductModal = () => {
     setIsOpen(false);
     reset();
   };
-  const handleAddSupplier = () => {
-    console.log("added");
-  };
+
   if (suppliersLoading) return <p>loading...</p>;
   if (categoryLoading) return <p>loading...</p>;
 
@@ -39,12 +40,12 @@ const AddProductModal = () => {
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-40" onClose={() => setIsOpen(false)}>
+        <Dialog as="div" className="relative z-30 overflow-hidden" onClose={() => setIsOpen(false)}>
           <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
+          <div className="fixed inset-0 overflow-y-hidden">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
               <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100" leave="ease-in duration-200" leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95">
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
@@ -53,9 +54,10 @@ const AddProductModal = () => {
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">Porfavor llena todas las secciones para crear el producto.</p>
+                    <p>{supplierSelected && supplierSelected}</p>
                   </div>
                   <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 overflow-hidden">
                       <div className="flex flex-col gap-1">
                         <label className="text-sm font-semibold" htmlFor="name">
                           Nombre del producto
@@ -67,11 +69,9 @@ const AddProductModal = () => {
                           <label className="text-sm font-semibold" htmlFor="category">
                             Categoría
                           </label>
-                          <button className="text-xs font-normal cursor-pointer flex items-center justify-center gap-1 hover:font-bold transition-all" onClick={handleAddSupplier}>
-                            <span className="text-lg self-center ">+</span> <span className="mt-1">Categoría</span>
-                          </button>
+                          <AddCategoryModal childrenModal={true} />
                         </div>
-                        <div className="flex items-center">{categoryData ? <SearchBar data={categoryData.queryCategory} setData={setCategory} modalRounded={true} /> : <p>loading...</p>}</div>
+                        <div className="flex items-center z-60">{categoryData ? <FormSearchBar data={categoryData.queryCategory} setData={setCategory} /> : <p>loading...</p>}</div>
                       </div>
                       <div className="flex flex-col gap-1">
                         <label className="text-sm font-semibold" htmlFor="stock">
@@ -87,12 +87,12 @@ const AddProductModal = () => {
                           })}
                         />
                       </div>
-                      <div className="flex flex-col gap-1">
-                        <div className="text-sm font-semibold flex justify-between items-center" htmlFor="supplier">
+                      <div className="flex flex-col gap-1 ">
+                        <div className="text-sm font-semibold flex justify-between items-center " htmlFor="supplier">
                           Proveedor
-                          <AddSupplierModal childrenModal={true} setData={setSupplier} />
+                          <AddSupplierModal childrenModal={true} setData={setSupplierData} />
                         </div>
-                        <div className="flex items-center">{suppliersData ? <SearchBar data={suppliersData.querySupplier} setData={setSupplier} modalRounded={true} /> : <p>loading...</p>}</div>
+                        <div className="flex items-center ">{suppliersData ? <FormSearchBar data={suppliersData.querySupplier} setData={setSupplierData} /> : <p>loading...</p>}</div>
                       </div>
                       <input
                         type="submit"

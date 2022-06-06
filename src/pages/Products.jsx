@@ -7,6 +7,8 @@ import { getProducts } from "../data/products/UseProducts";
 import Spinner from "../components/Spinner/Spinner";
 import { formatValue } from "../utils/Utils";
 import AddProductModal from "../components/AddModal/AddProductModal";
+import SearchBarReact from "../components/SearchBar/SearchBarReact";
+
 const Products = () => {
   const [filteredData, setFilteredData] = useState([]);
 
@@ -27,12 +29,12 @@ const Products = () => {
   if (loading) return <Spinner />;
 
   const queryProducts = data?.queryProduct;
-  console.log(queryProducts);
   return (
     <>
-      <div className="col-span-full xl:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200">
+      <div className="bg-white border rounded-sm shadow-lg col-span-full xl:col-span-6 border-slate-200">
         <header className="px-5 py-4 border-b border-slate-100 grid grid-cols-3 md:grid-cols-[max-content_1fr_min-content] grid-rows-2 md:grid-rows-1 items-center gap-y-3 gap-x-4">
-          <h2 className="font-semibold text-slate-800 text-xl w-fit col-span-2  md:col-span-1">Todos los productos</h2>
+          <h2 className="col-span-2 text-xl font-semibold text-slate-800 w-fit md:col-span-1">Todos los productos</h2>
+          <SearchBarReact />
           {/* <SearchBar data={queryProducts} setData={setFilteredData} /> */}
           <AddProductModal />
         </header>
@@ -43,7 +45,7 @@ const Products = () => {
             </section>
           ) : (
             <div className="overflow-x-auto">
-              <table className="table-auto w-full">
+              <table className="w-full table-auto">
                 {/* Table header */}
                 <thead className="text-xs font-semibold uppercase text-slate-400 bg-slate-50">
                   <tr>
@@ -77,7 +79,7 @@ const Products = () => {
                       return (
                         <tr key={singleData.id}>
                           <td className="p-2 whitespace-nowrap">
-                            <button className="text-center font-medium text-slate-800">{name || "No ingreso empresa"}</button>
+                            <button className="font-medium text-center text-slate-800">{name || "No ingreso empresa"}</button>
                           </td>
                           <td className="p-2 whitespace-nowrap">
                             <button className="text-center ">{formatValue(price) || "No ingreso el precio"}</button>
@@ -89,14 +91,14 @@ const Products = () => {
                             <div className="text-left ">{category?.name || "No ingresó categoría"}</div>
                           </td>
                           <td className="p-2 whitespace-nowrap">
-                            <div className="text-left">{supplier?.companyName || "No ingresó proveedor"}</div>
+                            <div className="text-left">{supplier?.name || "No ingresó proveedor"}</div>
                           </td>
                           <td className="p-2 whitespace-nowrap">
                             <div className="text-left">{costumer?.name || "No hay clientes"}</div>
                           </td>
 
                           <td className="p-2 whitespace-nowrap">
-                            <div className="text-xs text-slate-400  flex items-center justify-center gap-4 text-center self-center mx-auto">
+                            <div className="flex items-center self-center justify-center gap-4 mx-auto text-xs text-center text-slate-400">
                               <span>{/* <EditSupplierModal data={singleData} /> */}</span>
                               <span>{/* <DeleteModal type="supplier" deleteTitle="¿Deseas eliminar este proveedor?" handleServerDelete={handleServerDelete} data={singleData} /> */}</span>
                             </div>

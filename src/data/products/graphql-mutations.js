@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const CREATE_PRODUCT = gql`
-  mutation createProduct($price: Float, $stock: Int, $name: String, $categoryName: String, $categoryId: ID, $companyName: String, $companyId: ID) {
-    addProduct(input: { name: $name, price: $price, stock: $stock, supplier: { companyName: $companyName, id: $companyId }, category: { name: $categoryName, id: $categoryId } }) {
+  mutation createProduct($price: Float, $stock: Int, $name: String, $categoryId: ID, $companyId: ID) {
+    addProduct(input: { name: $name, price: $price, stock: $stock, supplier: { id: $companyId }, category: { id: $categoryId } }) {
       product {
         id
         name
@@ -11,11 +11,9 @@ export const CREATE_PRODUCT = gql`
         stock
         category {
           id
-          name
         }
         supplier {
           id
-          companyName
         }
       }
     }
