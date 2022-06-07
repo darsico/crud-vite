@@ -10,6 +10,6 @@ export const checkTypeOfData = (data) => {
 };
 
 export const getFilteredDataTypes = (data) => {
-  const dataFiltered = data?.map((data) => checkTypeOfData(data));
+  const dataFiltered = data?.map((data) => checkTypeOfData(data)).reverse();
   return dataFiltered;
 };

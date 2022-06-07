@@ -7,7 +7,7 @@ import App from "./App";
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
-    uri: "***REMOVED***",
+    uri: import.meta.env.VITE_APP_ENDPOINT,
   }),
 });
 

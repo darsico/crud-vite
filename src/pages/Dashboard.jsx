@@ -13,6 +13,7 @@ import Suppliers from "./Suppliers";
 import Products from "./Products";
 import Reports from "./Reports";
 import Transactions from "./Transactions";
+import Categories from "./Categories";
 // import Analytics from "./Analytics";
 
 function Dashboard() {
@@ -46,6 +47,7 @@ function Dashboard() {
             <Route exact path="/products" element={<Products />} />
             <Route exact path="/reports" element={<Reports />} />
             <Route exact path="/transactions" element={<Transactions />} />
+            <Route exact path="/categories" element={<Categories />} />
           </Routes>
         </main>
 

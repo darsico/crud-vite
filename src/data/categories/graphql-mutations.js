@@ -10,3 +10,13 @@ export const CREATE_CATEGORY = gql`
     }
   }
 `;
+
+export const DELETE_CATEGORY = gql`
+  mutation deleteCategory($id: [ID!]) {
+    deleteCategory(filter: { id: $id }) {
+      category {
+        id
+      }
+    }
+  }
+`;

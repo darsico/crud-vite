@@ -75,42 +75,44 @@ const Suppliers = () => {
                 {/* Table body */}
                 <tbody className="text-sm divide-y divide-slate-100">
                   {data &&
-                    filteredData.map((singleData) => {
-                      const { name } = singleData;
-                      return (
-                        <tr key={singleData.id}>
-                          <td className="p-2 whitespace-nowrap">
-                            <button className="font-medium text-center text-slate-800">{name || "No ingreso empresa"}</button>
-                          </td>
-                          <td className="p-2 whitespace-nowrap">
-                            <button className="font-medium text-center text-slate-800">{singleData.contactPerson || "No ingreso nombre"}</button>
-                          </td>
-                          <td className="p-2 whitespace-nowrap">
-                            <div className="text-left">{singleData.email || "No ingreso email"} </div>
-                          </td>
-                          <td className="p-2 whitespace-nowrap">
-                            <div className="text-left ">{singleData.phoneNumber || "No ingreso teléfono"}</div>
-                          </td>
-                          <td className="p-2 whitespace-nowrap">
-                            <div className="text-left">{singleData.address || "No ha ingresado dirección"}</div>
-                          </td>
-                          <td className="p-2 whitespace-nowrap">
-                            <div className="text-left">{singleData.ruc || "No ingreso ruc"}</div>
-                          </td>
+                    filteredData
+                      .map((singleData) => {
+                        const { name } = singleData;
+                        return (
+                          <tr key={singleData.id}>
+                            <td className="p-2 whitespace-nowrap">
+                              <button className="font-medium text-center text-slate-800">{name || "No ingreso empresa"}</button>
+                            </td>
+                            <td className="p-2 whitespace-nowrap">
+                              <button className="font-medium text-center text-slate-800">{singleData.contactPerson || "No ingreso nombre"}</button>
+                            </td>
+                            <td className="p-2 whitespace-nowrap">
+                              <div className="text-left">{singleData.email || "No ingreso email"} </div>
+                            </td>
+                            <td className="p-2 whitespace-nowrap">
+                              <div className="text-left ">{singleData.phoneNumber || "No ingreso teléfono"}</div>
+                            </td>
+                            <td className="p-2 whitespace-nowrap">
+                              <div className="text-left">{singleData.address || "No ha ingresado dirección"}</div>
+                            </td>
+                            <td className="p-2 whitespace-nowrap">
+                              <div className="text-left">{singleData.ruc || "No ingreso ruc"}</div>
+                            </td>
 
-                          <td className="p-2 whitespace-nowrap">
-                            <div className="flex items-center self-center justify-center gap-4 mx-auto text-xs text-center text-slate-400">
-                              <span>
-                                <EditSupplierModal data={singleData} />
-                              </span>
-                              <span>
-                                <DeleteModal type="supplier" deleteTitle="¿Deseas eliminar este proveedor?" handleServerDelete={handleServerDelete} data={singleData} />
-                              </span>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                            <td className="p-2 whitespace-nowrap">
+                              <div className="flex items-center self-center justify-center gap-4 mx-auto text-xs text-center text-slate-400">
+                                <span>
+                                  <EditSupplierModal data={singleData} />
+                                </span>
+                                <span>
+                                  <DeleteModal type="supplier" deleteTitle="¿Deseas eliminar este proveedor?" handleServerDelete={handleServerDelete} data={singleData} />
+                                </span>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                      .reverse()}
                 </tbody>
               </table>
             </div>

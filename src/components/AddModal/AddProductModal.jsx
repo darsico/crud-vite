@@ -8,24 +8,29 @@ import AddSupplierModal from "./AddSupplierModal";
 import AddCategoryModal from "./AddCategoryModal";
 import FormSearchBar from "../SearchBar/FormSearchBar";
 import { useSnapshot } from "valtio";
-import { supplier } from "../../store";
+import { category, supplier } from "../../store";
 
 const AddProductModal = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [dataSupplier, setSupplierData] = useState({});
-  const [category, setCategory] = useState({});
+
   const { register, handleSubmit, reset } = useForm();
+
   const [createProduct] = addProducts();
+
   const { supplierSelected } = useSnapshot(supplier);
+  const { categorySelected } = useSnapshot(category);
 
   const { data: suppliersData, loading: suppliersLoading, error: suppliersError } = getSuppliers();
   const { data: categoryData, loading: categoryLoading, error: categoryError } = getCategories();
 
   const onSubmit = (data) => {
-    // const {name, category, } = data
-    console.log(supplier.id);
-    console.log(category.id, "category");
-    // createProduct()
+    const { name, stock, price } = data;
+    const categoryId = categorySelected;
+    const supplierId = supplierSelected;
+    // console.log(category.id, "category");
+    const floatPrice = parseFloat(price);
+    createProduct({ variables: { name, stock, price: floatPrice, categoryId, supplierId } });
+    console.log(name, stock, categoryId, supplierId, floatPrice);
     setIsOpen(false);
     reset();
   };
@@ -55,9 +60,10 @@ const AddProductModal = () => {
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">Porfavor llena todas las secciones para crear el producto.</p>
                     <p>{supplierSelected && supplierSelected}</p>
+                    <p>{categorySelected && categorySelected}</p>
                   </div>
                   <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 overflow-hidden">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-rows-4  gap-4 mt-4 overflow-hidden">
                       <div className="flex flex-col gap-1">
                         <label className="text-sm font-semibold" htmlFor="name">
                           Nombre del producto
@@ -71,7 +77,7 @@ const AddProductModal = () => {
                           </label>
                           <AddCategoryModal childrenModal={true} />
                         </div>
-                        <div className="flex items-center z-60">{categoryData ? <FormSearchBar data={categoryData.queryCategory} setData={setCategory} /> : <p>loading...</p>}</div>
+                        <div className="flex items-center z-60">{categoryData ? <FormSearchBar data={categoryData.queryCategory} /> : <p>loading...</p>}</div>
                       </div>
                       <div className="flex flex-col gap-1">
                         <label className="text-sm font-semibold" htmlFor="stock">
@@ -87,18 +93,41 @@ const AddProductModal = () => {
                           })}
                         />
                       </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-sm font-semibold" htmlFor="cost">
+                          Costo
+                        </label>
+                        <input className="w-full border  rounded-md h-full mt-1 focus:ring-indigo-500 focus:border-indigo-500 block  shadow-sm sm:text-sm border-gray-300 p-2" type="number" step="0.01" placeholder="Ingresa el costo" {...register("cost")} />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-sm font-semibold" htmlFor="price">
+                          Precio
+                        </label>
+                        <input className="w-full border  rounded-md h-full mt-1 focus:ring-indigo-500 focus:border-indigo-500 block  shadow-sm sm:text-sm border-gray-300 p-2" type="number" step="0.01" placeholder="Ingresa el precio" {...register("price")} />
+                      </div>
+
                       <div className="flex flex-col gap-1 ">
                         <div className="text-sm font-semibold flex justify-between items-center " htmlFor="supplier">
                           Proveedor
-                          <AddSupplierModal childrenModal={true} setData={setSupplierData} />
+                          <AddSupplierModal childrenModal={true} />
                         </div>
-                        <div className="flex items-center ">{suppliersData ? <FormSearchBar data={suppliersData.querySupplier} setData={setSupplierData} /> : <p>loading...</p>}</div>
+                        <div className="flex items-center ">{suppliersData ? <FormSearchBar data={suppliersData.querySupplier} /> : <p>loading...</p>}</div>
                       </div>
-                      <input
-                        type="submit"
-                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        value={"Agregar productos"}
-                      />
+                      <div className="sm:col-span-2 flex justify-between gap-4 h-fit items-center self-center pt-4 ">
+                        <button
+                          type="button"
+                          className="justify-center w-full px-4 py-2  text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm flex items-center "
+                          // onClick={handleCancel}
+                          // ref={cancelButtonRef}
+                        >
+                          Cancelar
+                        </button>
+                        <input
+                          type="submit"
+                          className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 "
+                          value={"Agregar producto"}
+                        />
+                      </div>
                     </div>
                   </form>
                 </Dialog.Panel>

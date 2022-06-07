@@ -1,16 +1,16 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useContext, useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "react-hook-form";
 
 import { addCategory } from "../../data/categories/UseCategories";
-import { CategoryContext } from "../../context/CategoryProvider.jsx";
+
 import { useSnapshot } from "valtio";
 import { category } from "../../store";
 
 export default function AddCategoryModal({ childrenModal }) {
   const { register, handleSubmit, reset } = useForm();
-  const { setCategoryCreated } = useSnapshot(category);
+  const { setCategoryCreated, setIsCreated } = useSnapshot(category);
   const [createCategory] = addCategory();
   const [open, setOpen] = useState(false);
 
@@ -21,6 +21,7 @@ export default function AddCategoryModal({ childrenModal }) {
     createCategory({ variables: { name } });
     if (childrenModal) {
       setCategoryCreated(data);
+      setIsCreated(true);
     }
     setOpen(false);
     reset();

@@ -12,6 +12,7 @@ const UseFormCategorySearch = (data, setData) => {
 
   const onDropdownChange = (value) => {
     setValue(value);
+    console.log(value);
     if (value === null) return setData(data);
     const filtered = data?.filter((single) => single.id === value.id);
     setCategorySelected(value.id);
